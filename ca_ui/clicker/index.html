@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Penanda tetesan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --ink: #1C2522; --muted: #66726D; --rule: #DCE2DF; --accent: #0F6E7C; --surface: #FFFFFF; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: transparent; font-family: "IBM Plex Sans", system-ui, sans-serif; }
+  #wrap { position: relative; width: 100%; transition: opacity .15s; }
+  #stage { position: relative; }
+  canvas { display: block; width: 100%; border-radius: 6px; touch-action: none; user-select: none; background: #0d1210; }
+  canvas.pan { cursor: grab; } canvas.panning { cursor: grabbing; } canvas.edit { cursor: none; }
+  #zoom { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; }
+  #zoom button { width: 30px; height: 30px; padding: 0; display: grid; place-items: center; font-size: 1rem;
+                 background: rgba(255,255,255,.92); border-color: transparent; color: #1C2522; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+  #zoom button.wide { width: auto; padding: 0 .6rem; font-size: .78rem; }
+  #zl { position: absolute; left: 8px; bottom: 8px; font-size: .72rem; color: #fff; background: rgba(0,0,0,.45);
+        padding: .1rem .45rem; border-radius: 4px; font-variant-numeric: tabular-nums; pointer-events: none; }
+  #bar { display: flex; align-items: center; gap: .5rem; min-height: 2.5rem; padding-top: .55rem;
+         font-size: .85rem; color: var(--muted); }
+  #hint { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #hint b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+  button { font: inherit; font-size: .85rem; border-radius: 6px; padding: .35rem .8rem; cursor: pointer;
+           border: 1px solid var(--rule); background: var(--surface); color: var(--ink);
+           transition: background-color .12s, border-color .12s, transform .12s; touch-action: manipulation; }
+  button:hover:not(:disabled) { border-color: var(--accent); }
+  button:active:not(:disabled) { transform: translateY(1px); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button:disabled { opacity: .45; cursor: default; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+  .hidden { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { button, #wrap { transition: none; } }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage">
+    <canvas id="cv" aria-label="Foto tetesan. Scroll untuk zoom, seret untuk menggeser." role="img"></canvas>
+    <div id="zoom">
+      <button id="zin" type="button" aria-label="Perbesar" title="Perbesar (+)">+</button>
+      <button id="zout" type="button" aria-label="Perkecil" title="Perkecil (−)">−</button>
+      <button id="zfocus" type="button" class="wide" title="Fokus ke tetesan (F)">Tetesan</button>
+      <button id="zfit" type="button" class="wide" title="Seluruh foto (0)">Seluruh foto</button>
+    </div>
+    <span id="zl"></span>
+  </div>
+  <div id="bar">
+    <span id="hint" aria-live="polite"></span>
+    <button id="undo" type="button">Urungkan</button>
+    <button id="clear" type="button">Hapus semua</button>
+    <button id="apply" type="button" class="primary">Hitung</button>
+  </div>
+</div>
+<script>
+// ---- protokol komponen Streamlit (tanpa build tool)
+function send(type, data) { window.parent.postMessage(Object.assign({ isStreamlitMessage: true, type }, data), "*"); }
+const ST = {
+  ready: () => send("streamlit:componentReady", { apiVersion: 1 }),
+  height: (h) => send("streamlit:setFrameHeight", { height: h }),
+  value: (v) => send("streamlit:setComponentValue", { value: v, dataType: "json" }),
+};
+
+const $ = (id) => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d"), hint = $("hint");
+const bUndo = $("undo"), bClear = $("clear"), bApply = $("apply");
+const img = new Image();
+let A = { mode: "auto" }, src = null, sid = null, vid = null;
+let pts = [], base = [], roi = null, hover = null, dpr = 1, busy = false, busyTimer = null;
+// tampilan: kotak ternormalisasi [x0, y0, lebar] dari foto; tinggi mengikuti rasio kanvas = rasio foto
+let V = { x: 0, y: 0, w: 1 };
+let press = null;        // {sx, sy, n, btn, panning, start}
+const touches = new Map();
+const MAXZ = 16;
+
+const accent = () => getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#0F6E7C";
+function setTheme(t) { const r = document.documentElement.style; for (const k of ["ink", "muted", "rule", "accent", "surface"]) if (t && t[k]) r.setProperty("--" + k, t[k]); }
+
+const CW = () => cv.width / dpr, CH = () => cv.height / dpr;
+function clampV() {
+  V.w = Math.min(1, Math.max(1 / MAXZ, V.w));
+  V.x = Math.min(Math.max(V.x, 0), 1 - V.w);
+  V.y = Math.min(Math.max(V.y, 0), 1 - V.w);
+}
+// layar <-> foto ternormalisasi (sumbu y memakai skala sama karena rasio kanvas = rasio foto)
+const toN = (sx, sy) => [V.x + sx / CW() * V.w, V.y + sy / CH() * V.w];
+const toS = (n) => [(n[0] - V.x) / V.w * CW(), (n[1] - V.y) / V.w * CH()];
+function evS(e) { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+
+function saveView() { try { sessionStorage.setItem("ca-view-" + vid, JSON.stringify(V)); } catch (e) {} }
+function loadView() { try { const v = JSON.parse(sessionStorage.getItem("ca-view-" + vid)); if (v && v.w) { V = v; return true; } } catch (e) {} return false; }
+function fitBox(b) {
+  if (!b) { V = { x: 0, y: 0, w: 1 }; return; }
+  const [x0, y0, x1, y1] = b;
+  const w = Math.max(x1 - x0, y1 - y0, 0.06);
+  V = { x: (x0 + x1) / 2 - w / 2, y: (y0 + y1) / 2 - w / 2, w };
+  clampV();
+}
+function zoomAt(f, sx, sy) {
+  const n = toN(sx, sy);
+  V.w = V.w / f; clampV();
+  V.x = n[0] - sx / CW() * V.w; V.y = n[1] - sy / CH() * V.w; clampV();
+  saveView(); draw();
+}
+
+function layout() {
+  if (!img.naturalWidth) return;
+  dpr = window.devicePixelRatio || 1;
+  const w = $("wrap").clientWidth;
+  const h = Math.round(w * img.naturalHeight / img.naturalWidth);
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  cv.style.height = h + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  draw();
+  ST.height($("wrap").offsetHeight + 2);
+}
+
+function dot(n, r) {
+  const [x, y] = toS(n);
+  ctx.beginPath(); ctx.arc(x, y, r + 2, 0, 7); ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.fill();
+  ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fillStyle = accent(); ctx.fill();
+}
+
+function draw() {
+  const w = CW(), h = CH();
+  ctx.clearRect(0, 0, w, h);
+  if (!img.naturalWidth) return;
+  ctx.imageSmoothingEnabled = V.w > 0.25;
+  ctx.drawImage(img, V.x * img.naturalWidth, V.y * img.naturalHeight, V.w * img.naturalWidth, V.w * img.naturalHeight, 0, 0, w, h);
+  const dragBox = press && !press.panning && press.moved && (A.mode === "roi" || A.mode === "locate") && hover
+    ? [press.n[0], press.n[1], hover[0], hover[1]] : null;
+  const box = dragBox || ((A.mode === "roi" || A.mode === "locate") ? roi : null);
+  if (box) {
+    const [x0, y0] = toS([Math.min(box[0], box[2]), Math.min(box[1], box[3])]);
+    const [x1, y1] = toS([Math.max(box[0], box[2]), Math.max(box[1], box[3])]);
+    ctx.fillStyle = "rgba(10,16,14,.38)";
+    ctx.fillRect(0, 0, w, Math.max(0, y0)); ctx.fillRect(0, y1, w, h - y1);
+    ctx.fillRect(0, y0, Math.max(0, x0), y1 - y0); ctx.fillRect(x1, y0, w - x1, y1 - y0);
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]); ctx.strokeRect(x0, y0, x1 - x0, y1 - y0); ctx.setLineDash([]);
+  }
+  if (base.length) {
+    if (base.length === 2 || (A.mode === "baseline" && hover)) {
+      const a = toS(base[0]), b = toS(base.length === 2 ? base[1] : hover);
+      ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(...a); ctx.lineTo(...b); ctx.stroke();
+      ctx.strokeStyle = accent(); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(...a); ctx.lineTo(...b); ctx.stroke();
+    }
+    base.forEach((p) => dot(p, 4.5));
+  }
+  pts.forEach((p) => dot(p, 3.5));
+  if (A.mode !== "auto" && hover && !(press && (press.panning || press.moved))) loupe(hover);
+  $("zl").textContent = `${(1 / V.w).toFixed(1)}×`;
+}
+
+// ---- kaca pembesar: 3× perbesaran tampilan saat ini
+function loupe(n) {
+  const [x, y] = toS(n), w = CW(), h = CH();
+  const R = Math.max(28, Math.min(58, h * 0.4)), gap = 14;
+  let cx = x + R + gap, cy = y - R - gap;
+  if (cx + R > w) cx = x - R - gap;
+  if (cy - R < 0) cy = y + R + gap;
+  if (cy + R > h) cy = Math.min(Math.max(y, R), h - R);
+  cx = Math.min(Math.max(cx, R), w - R);
+  if (Math.hypot(cx - x, cy - y) < R + 4) cx = x < w / 2 ? Math.min(x + R + gap, w - R) : Math.max(x - R - gap, R);
+  const sw = (2 * R / 3) / w * V.w * img.naturalWidth;
+  const sx = n[0] * img.naturalWidth, sy = n[1] * img.naturalHeight;
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.closePath();
+  ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 12; ctx.fillStyle = "#000"; ctx.fill(); ctx.shadowBlur = 0;
+  ctx.clip();
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(img, sx - sw / 2, sy - sw / 2, sw, sw, cx - R, cy - R, 2 * R, 2 * R);
+  ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx - 5, cy); ctx.moveTo(cx + 5, cy); ctx.lineTo(cx + R, cy);
+  ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy - 5); ctx.moveTo(cx, cy + 5); ctx.lineTo(cx, cy + R); ctx.stroke();
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
+  ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(x - 7, y); ctx.lineTo(x - 2, y); ctx.moveTo(x + 2, y); ctx.lineTo(x + 7, y);
+  ctx.moveTo(x, y - 7); ctx.lineTo(x, y - 2); ctx.moveTo(x, y + 2); ctx.lineTo(x, y + 7); ctx.stroke();
+}
+
+const HINTS = {
+  auto: "Scroll untuk zoom, seret untuk menggeser foto.",
+  locate: "Klik tetesan yang benar, atau seret kotak di sekelilingnya. Seret dengan klik kanan untuk menggeser.",
+  roi: "Seret kotak di sekitar tetesan. Seret dengan klik kanan untuk menggeser.",
+};
+function ui() {
+  const m = A.mode, edit = m !== "auto";
+  $("wrap").style.opacity = busy ? ".72" : "1";
+  cv.classList.toggle("edit", edit);
+  cv.classList.toggle("pan", !edit);
+  bUndo.classList.toggle("hidden", !(m === "points" || m === "baseline"));
+  bClear.classList.toggle("hidden", m !== "points");
+  bApply.classList.toggle("hidden", m !== "points");
+  $("zfocus").disabled = !A.focus;
+  bUndo.disabled = m === "points" ? !pts.length : !base.length;
+  bClear.disabled = !pts.length;
+  bApply.disabled = pts.length < 3;
+  bApply.textContent = pts.length >= 3 ? `Hitung dari ${pts.length} titik` : "Hitung";
+  if (busy) { bUndo.disabled = bClear.disabled = bApply.disabled = true; hint.innerHTML = "<b>Menghitung…</b>"; return; }
+  if (m === "baseline") hint.innerHTML = base.length === 0 ? "Klik titik kontak <b>kiri</b> pada permukaan."
+      : base.length === 1 ? "Klik titik kontak <b>kanan</b> pada permukaan." : "Baseline tersimpan. Klik lagi untuk mengganti.";
+  else if (m === "points") hint.innerHTML = `<b>${pts.length}</b> titik. Klik di tepi tetesan, minimal 6 titik termasuk dekat kedua titik kontak.`;
+  else hint.innerHTML = HINTS[m] || "";
+}
+
+function commit(kind, payload) {
+  busy = true; clearTimeout(busyTimer);
+  busyTimer = setTimeout(() => { busy = false; ui(); }, 20000);  // pengaman bila tidak ada balasan
+  ST.value(Object.assign({ kind, nonce: Date.now() + Math.random() }, payload));
+  ui();
+}
+
+function onClick(n) {
+  const m = A.mode;
+  if (busy) return;
+  if (m === "baseline") {
+    if (base.length >= 2) base = [];
+    base.push(n);
+    if (base.length === 2) commit("baseline", { pts: base });
+  } else if (m === "points") pts.push(n);
+  else if (m === "locate") commit("locate", { pt: n, view: V.w });
+  ui(); draw();
+}
+
+// ---- pointer: klik vs seret; seret = geser (mode lihat, klik kanan/tengah, atau Spasi) atau kotak
+let spaceDown = false;
+cv.addEventListener("contextmenu", (e) => e.preventDefault());
+cv.addEventListener("pointerdown", (e) => {
+  touches.set(e.pointerId, evS(e));
+  if (touches.size === 2) { press = { pinch: true, d: null }; return; }
+  const s = evS(e), n = toN(...s);
+  const panning = A.mode === "auto" || e.button === 1 || e.button === 2 || spaceDown;
+  press = { sx: s[0], sy: s[1], n, panning, moved: false, v0: { ...V } };
+  cv.setPointerCapture(e.pointerId);
+  if (panning) cv.classList.add("panning");
+});
+cv.addEventListener("pointermove", (e) => {
+  const s = evS(e);
+  if (touches.has(e.pointerId)) touches.set(e.pointerId, s);
+  if (press && press.pinch && touches.size === 2) {  // cubit untuk zoom (layar sentuh)
+    const [a, b] = [...touches.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+    if (press.d) zoomAt(d / press.d, (a[0] + b[0]) / 2, (a[1] + b[1]) / 2);
+    press.d = d; return;
+  }
+  hover = toN(...s);
+  if (press) {
+    if (Math.hypot(s[0] - press.sx, s[1] - press.sy) > 4) press.moved = true;
+    if (press.panning && press.moved) {
+      V.x = press.v0.x - (s[0] - press.sx) / CW() * V.w;
+      V.y = press.v0.y - (s[1] - press.sy) / CH() * V.w;
+      clampV();
+    }
+  }
+  draw();
+});
+function endPress(e) {
+  touches.delete(e.pointerId);
+  if (cv.hasPointerCapture && cv.hasPointerCapture(e.pointerId)) cv.releasePointerCapture(e.pointerId);
+  cv.classList.remove("panning");
+  if (!press || press.pinch) { press = touches.size ? press : null; saveView(); return; }
+  const p = press; press = null;
+  if (p.panning) { saveView(); draw(); return; }
+  if (!p.moved) { onClick(p.n); return; }
+  if (A.mode === "roi" || A.mode === "locate") {
+    const n = toN(...evS(e));
+    const b = [Math.min(p.n[0], n[0]), Math.min(p.n[1], n[1]), Math.max(p.n[0], n[0]), Math.max(p.n[1], n[1])];
+    if ((b[2] - b[0]) / V.w * CW() > 8 && (b[3] - b[1]) / V.w * CH() > 8) { roi = b; commit("roi", { roi: b }); }
+  }
+  ui(); draw();
+}
+cv.addEventListener("pointerup", endPress);
+cv.addEventListener("pointercancel", endPress);
+cv.addEventListener("pointerleave", () => { hover = null; if (!press) draw(); });
+window.addEventListener("blur", () => { hover = null; spaceDown = false; if (!press) draw(); });
+cv.addEventListener("wheel", (e) => { e.preventDefault(); const s = evS(e); zoomAt(Math.exp(-e.deltaY * 0.0015), s[0], s[1]); }, { passive: false });
+
+$("zin").onclick = () => zoomAt(1.5, CW() / 2, CH() / 2);
+$("zout").onclick = () => zoomAt(1 / 1.5, CW() / 2, CH() / 2);
+$("zfit").onclick = () => { fitBox(null); saveView(); draw(); };
+$("zfocus").onclick = () => { fitBox(A.focus); saveView(); draw(); };
+bUndo.onclick = () => { if (A.mode === "points") pts.pop(); else base.pop(); ui(); draw(); };
+bClear.onclick = () => { pts = []; ui(); draw(); };
+bApply.onclick = () => { if (pts.length >= 3) commit("points", { pts }); };
+window.addEventListener("keydown", (e) => {
+  if (e.key === " ") { spaceDown = true; e.preventDefault(); }
+  if (e.key === "+" || e.key === "=") $("zin").onclick();
+  if (e.key === "-") $("zout").onclick();
+  if (e.key === "0") $("zfit").onclick();
+  if (e.key === "f" || e.key === "F") $("zfocus").onclick();
+  if (A.mode === "points" && e.key === "Enter" && pts.length >= 3) commit("points", { pts });
+  if ((e.key === "Backspace" || (e.key === "z" && (e.ctrlKey || e.metaKey))) && (pts.length || base.length)) bUndo.onclick();
+});
+window.addEventListener("keyup", (e) => { if (e.key === " ") spaceDown = false; });
+new ResizeObserver(layout).observe($("wrap"));
+
+window.addEventListener("message", (ev) => {
+  if (!ev.data || ev.data.type !== "streamlit:render") return;
+  A = ev.data.args;
+  setTheme(A.theme);
+  if (A.vid !== vid) {  // foto lain: pulihkan tampilan terakhir atau fokus ke tetesan
+    vid = A.vid;
+    if (!loadView()) fitBox(A.focus);
+  }
+  if (A.sid !== sid) {  // status koreksi dari Python berubah → sinkronkan
+    sid = A.sid; pts = (A.pts || []).slice(); base = (A.base || []).slice(); roi = A.roi || null;
+    busy = false; clearTimeout(busyTimer);
+  }
+  ui();
+  if (A.src !== src) { src = A.src; img.onload = layout; img.src = src; } else layout();
+});
+ST.ready();
+</script>
+</body>
+</html>

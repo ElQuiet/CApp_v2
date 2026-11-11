@@ -1,0 +1,26 @@
+[theme]
+font = "IBM Plex Sans:https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+baseRadius = "6px"
+showWidgetBorder = true
+
+[theme.light]
+primaryColor = "#0F6E7C"
+backgroundColor = "#F5F7F6"
+secondaryBackgroundColor = "#EAEEEC"
+textColor = "#1C2522"
+borderColor = "#DCE2DF"
+linkColor = "#0F6E7C"
+
+[theme.dark]
+primaryColor = "#3FA7B5"
+backgroundColor = "#161D1B"
+secondaryBackgroundColor = "#1F2825"
+textColor = "#E3E8E5"
+borderColor = "#2E3935"
+linkColor = "#5FC0CC"
+
+[client]
+toolbarMode = "viewer"
+
+[browser]
+gatherUsageStats = false
