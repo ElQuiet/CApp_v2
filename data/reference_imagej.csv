@@ -1,0 +1,218 @@
+image,sample,stage,titik,theta_ref,theta_left,theta_right,ref_source,ref_ok
+01 - Baseline/Contact angle/0.3_Entry/titik1.jpg,Entry 0.3,baseline,1,87.365,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/0.3_Entry/titik2.jpg,Entry 0.3,baseline,2,95.428,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/0.3_Entry/titik3.jpg,Entry 0.3,baseline,3,96.756,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/0.3_Entry/titik4.jpg,Entry 0.3,baseline,4,91.288,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/0.3_Entry/titik5.jpg,Entry 0.3,baseline,5,96.452,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/0.3_Entry/titik6.jpg,Entry 0.3,baseline,6,97.578,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/Exit_0.3/titik1.jpg,Exit 0.3,baseline,1,87.989,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/Exit_0.3/titik2.jpg,Exit 0.3,baseline,2,82.605,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/Exit_0.3/titik3.jpg,Exit 0.3,baseline,3,87.535,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/Exit_0.3/titik4.jpg,Exit 0.3,baseline,4,88.408,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/Exit_0.3/titik5.jpg,Exit 0.3,baseline,5,90.567,,,imagej_lbadsa,1
+01 - Baseline/Contact angle/Exit_0.3/titik6.jpg,Exit 0.3,baseline,6,91.607,,,imagej_lbadsa,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 1 entry 03-20260928T091541Z-1-001/Sampel 1 entry 03/Titik 1.jpg,Entry 03,before_pre,1,95.3,96.4,94.2,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 1 entry 03-20260928T091541Z-1-001/Sampel 1 entry 03/Titik 2.jpg,Entry 03,before_pre,2,100.3,99.4,101.2,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 1 entry 03-20260928T091541Z-1-001/Sampel 1 entry 03/Titik 3.jpg,Entry 03,before_pre,3,98.8,99.9,97.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 1 entry 03-20260928T091541Z-1-001/Sampel 1 entry 03/Titik 4.jpg,Entry 03,before_pre,4,85.3,85.3,85.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 1 entry 03-20260928T091541Z-1-001/Sampel 1 entry 03/Titik 5.jpg,Entry 03,before_pre,5,91.8,91.7,91.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 1 entry 03-20260928T091541Z-1-001/Sampel 1 entry 03/Titik 6.jpg,Entry 03,before_pre,6,104.8,107.0,102.7,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 2 entry 07-20260928T091550Z-1-001/Sampel 2 entry 07/Titik 1.jpg,Entry 07,before_pre,1,92.6,90.4,94.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 2 entry 07-20260928T091550Z-1-001/Sampel 2 entry 07/Titik 2.jpg,Entry 07,before_pre,2,75.5,78.3,72.7,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 2 entry 07-20260928T091550Z-1-001/Sampel 2 entry 07/Titik 3.jpg,Entry 07,before_pre,3,91.8,93.9,89.6,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 2 entry 07-20260928T091550Z-1-001/Sampel 2 entry 07/Titik 4.jpg,Entry 07,before_pre,4,86.8,89.4,84.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 2 entry 07-20260928T091550Z-1-001/Sampel 2 entry 07/Titik 5.jpg,Entry 07,before_pre,5,93.4,96.9,90.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 2 entry 07-20260928T091550Z-1-001/Sampel 2 entry 07/Titik 6.jpg,Entry 07,before_pre,6,86.4,87.2,85.5,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 3 exit 03-20260928T091546Z-1-001/Sampel 3 exit 03/Titik 1.jpg,Exit 03,before_pre,1,72.4,74.2,70.7,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 3 exit 03-20260928T091546Z-1-001/Sampel 3 exit 03/Titik 2.jpg,Exit 03,before_pre,2,70.8,70.9,70.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 3 exit 03-20260928T091546Z-1-001/Sampel 3 exit 03/Titik 3.jpg,Exit 03,before_pre,3,85.4,85.5,85.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 3 exit 03-20260928T091546Z-1-001/Sampel 3 exit 03/Titik 4.jpg,Exit 03,before_pre,4,75.2,76.5,74.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 3 exit 03-20260928T091546Z-1-001/Sampel 3 exit 03/Titik 5.jpg,Exit 03,before_pre,5,78.4,78.6,78.2,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 3 exit 03-20260928T091546Z-1-001/Sampel 3 exit 03/Titik 6.jpg,Exit 03,before_pre,6,91.2,90.8,91.5,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 4 exit 07-20260928T091543Z-1-001/Sampel 4 exit 07/Titik 1.jpg,Exit 07,before_pre,1,88.0,88.5,87.6,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 4 exit 07-20260928T091543Z-1-001/Sampel 4 exit 07/Titik 2.jpg,Exit 07,before_pre,2,82.8,81.9,83.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 4 exit 07-20260928T091543Z-1-001/Sampel 4 exit 07/Titik 3.jpg,Exit 07,before_pre,3,77.4,77.5,77.2,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 4 exit 07-20260928T091543Z-1-001/Sampel 4 exit 07/Titik 4.jpg,Exit 07,before_pre,4,82.6,81.6,83.5,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 4 exit 07-20260928T091543Z-1-001/Sampel 4 exit 07/Titik 5.jpg,Exit 07,before_pre,5,84.0,81.2,86.7,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 4 exit 07-20260928T091543Z-1-001/Sampel 4 exit 07/Titik 6.jpg,Exit 07,before_pre,6,85.7,86.6,84.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 27.A-L-Pre-Cont-20260928T091602Z-1-001/Sampel 27.A-L-Pre-Cont/Titik 1.jpg,27.A-L,before_pre,1,93.2,91.2,95.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 27.A-L-Pre-Cont-20260928T091602Z-1-001/Sampel 27.A-L-Pre-Cont/Titik 2.jpg,27.A-L,before_pre,2,102.8,101.4,104.2,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 27.A-L-Pre-Cont-20260928T091602Z-1-001/Sampel 27.A-L-Pre-Cont/Titik 3.jpg,27.A-L,before_pre,3,94.3,93.4,95.2,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 27.A-L-Pre-Cont-20260928T091602Z-1-001/Sampel 27.A-L-Pre-Cont/Titik 4.jpg,27.A-L,before_pre,4,106.4,106.7,106.1,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 27.A-L-Pre-Cont-20260928T091602Z-1-001/Sampel 27.A-L-Pre-Cont/Titik 5.jpg,27.A-L,before_pre,5,91.2,90.1,92.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 27.A-L-Pre-Cont-20260928T091602Z-1-001/Sampel 27.A-L-Pre-Cont/Titik 6.jpg,27.A-L,before_pre,6,90.6,88.9,92.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 37.A-C-Pre-Cont-20260928T091558Z-1-001/Sampel 37.A-C-Pre-Cont/Titik 1.jpg,37.A-C,before_pre,1,97.0,96.3,97.6,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 37.A-C-Pre-Cont-20260928T091558Z-1-001/Sampel 37.A-C-Pre-Cont/Titik 2.jpg,37.A-C,before_pre,2,109.2,111.4,107.1,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 37.A-C-Pre-Cont-20260928T091558Z-1-001/Sampel 37.A-C-Pre-Cont/Titik 3.jpg,37.A-C,before_pre,3,105.2,106.4,104.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 37.A-C-Pre-Cont-20260928T091558Z-1-001/Sampel 37.A-C-Pre-Cont/Titik 4.jpg,37.A-C,before_pre,4,97.4,95.3,99.4,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 37.A-C-Pre-Cont-20260928T091558Z-1-001/Sampel 37.A-C-Pre-Cont/Titik 5.jpg,37.A-C,before_pre,5,96.6,94.0,99.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 37.A-C-Pre-Cont-20260928T091558Z-1-001/Sampel 37.A-C-Pre-Cont/Titik 6.jpg,37.A-C,before_pre,6,91.8,87.9,95.6,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 47.A-R-Pre-Cont-20260928T091554Z-1-001/Sampel 47.A-R-Pre-Cont/Titik 1.jpg,47.A-R,before_pre,1,95.2,92.9,97.4,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 47.A-R-Pre-Cont-20260928T091554Z-1-001/Sampel 47.A-R-Pre-Cont/Titik 2.jpg,47.A-R,before_pre,2,94.2,93.6,94.9,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 47.A-R-Pre-Cont-20260928T091554Z-1-001/Sampel 47.A-R-Pre-Cont/Titik 3.jpg,47.A-R,before_pre,3,104.0,101.5,106.4,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 47.A-R-Pre-Cont-20260928T091554Z-1-001/Sampel 47.A-R-Pre-Cont/Titik 4.jpg,47.A-R,before_pre,4,93.6,90.6,96.5,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 47.A-R-Pre-Cont-20260928T091554Z-1-001/Sampel 47.A-R-Pre-Cont/Titik 5.jpg,47.A-R,before_pre,5,86.5,88.2,84.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sebelum pre-degreasing/Sampel 47.A-R-Pre-Cont-20260928T091554Z-1-001/Sampel 47.A-R-Pre-Cont/Titik 6.jpg,47.A-R,before_pre,6,85.6,85.3,86.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_5_BL-E-03-CONT-20260928T090506Z-1-001/Pre_5_BL-E-03-CONT/titik 1.jpg,Entry 03,after_pre,1,33.0,85.5,-19.5,imagej_contact_angle,0
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_5_BL-E-03-CONT-20260928T090506Z-1-001/Pre_5_BL-E-03-CONT/titik 2.jpg,Entry 03,after_pre,2,80.2,57.3,103.1,imagej_contact_angle,0
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_5_BL-E-03-CONT-20260928T090506Z-1-001/Pre_5_BL-E-03-CONT/titik 3.jpg,Entry 03,after_pre,3,23.2,21.4,25.1,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_5_BL-E-03-CONT-20260928T090506Z-1-001/Pre_5_BL-E-03-CONT/titik 4.jpg,Entry 03,after_pre,4,6.9,5.9,7.9,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_5_BL-E-03-CONT-20260928T090506Z-1-001/Pre_5_BL-E-03-CONT/titik 5.jpg,Entry 03,after_pre,5,112.2,108.4,116.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_5_BL-E-03-CONT-20260928T090506Z-1-001/Pre_5_BL-E-03-CONT/titik 6.jpg,Entry 03,after_pre,6,34.6,87.0,-17.9,imagej_contact_angle,0
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_10_BL-E-07-CONT-20260928T090503Z-1-001/Pre_10_BL-E-07-CONT/Titik 1.jpg,Entry 07,after_pre,1,13.7,16.4,11.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_10_BL-E-07-CONT-20260928T090503Z-1-001/Pre_10_BL-E-07-CONT/Titik 2.jpg,Entry 07,after_pre,2,9.7,8.3,11.1,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_10_BL-E-07-CONT-20260928T090503Z-1-001/Pre_10_BL-E-07-CONT/Titik 3.jpg,Entry 07,after_pre,3,20.8,17.3,24.2,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_10_BL-E-07-CONT-20260928T090503Z-1-001/Pre_10_BL-E-07-CONT/Titik 4.jpg,Entry 07,after_pre,4,10.6,10.0,11.1,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_10_BL-E-07-CONT-20260928T090503Z-1-001/Pre_10_BL-E-07-CONT/Titik 5.jpg,Entry 07,after_pre,5,14.8,11.4,18.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_10_BL-E-07-CONT-20260928T090503Z-1-001/Pre_10_BL-E-07-CONT/Titik 6.jpg,Entry 07,after_pre,6,11.6,10.2,12.9,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_15_EX-03-CONT-20260928T090457Z-1-001/Pre_15_EX-03-CONT/titik 1.jpg,Exit 03,after_pre,1,87.2,84.8,89.5,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_15_EX-03-CONT-20260928T090457Z-1-001/Pre_15_EX-03-CONT/titik 2.jpg,Exit 03,after_pre,2,66.2,158.4,-25.9,imagej_contact_angle,0
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_15_EX-03-CONT-20260928T090457Z-1-001/Pre_15_EX-03-CONT/titik 3.jpg,Exit 03,after_pre,3,99.8,97.7,102.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_15_EX-03-CONT-20260928T090457Z-1-001/Pre_15_EX-03-CONT/titik 4.jpg,Exit 03,after_pre,4,89.6,85.5,93.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_15_EX-03-CONT-20260928T090457Z-1-001/Pre_15_EX-03-CONT/titik 5.jpg,Exit 03,after_pre,5,55.1,-20.3,130.5,imagej_contact_angle,0
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_15_EX-03-CONT-20260928T090457Z-1-001/Pre_15_EX-03-CONT/titik 6.jpg,Exit 03,after_pre,6,58.0,38.6,77.4,imagej_contact_angle,0
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_20_BL-EX-07-CONT-20260928T084131Z-1-001/Pre_20_BL-EX-07-CONT/titik 1.jpg,Exit 07,after_pre,1,39.2,30.1,48.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_20_BL-EX-07-CONT-20260928T084131Z-1-001/Pre_20_BL-EX-07-CONT/titik 2.jpg,Exit 07,after_pre,2,6.2,6.8,5.6,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_20_BL-EX-07-CONT-20260928T084131Z-1-001/Pre_20_BL-EX-07-CONT/titik 3.jpg,Exit 07,after_pre,3,10.7,8.6,12.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_20_BL-EX-07-CONT-20260928T084131Z-1-001/Pre_20_BL-EX-07-CONT/titik 4.jpg,Exit 07,after_pre,4,8.7,8.5,8.9,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_20_BL-EX-07-CONT-20260928T084131Z-1-001/Pre_20_BL-EX-07-CONT/titik 5.jpg,Exit 07,after_pre,5,10.2,4.7,15.6,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_20_BL-EX-07-CONT-20260928T084131Z-1-001/Pre_20_BL-EX-07-CONT/titik 6.jpg,Exit 07,after_pre,6,10.9,9.8,12.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_27_A-L-PRE-CONT-20260928T090440Z-1-001/Pre_27_A-L-PRE-CONT/titik 1.jpg,27.A-L,after_pre,1,29.1,27.2,31.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_27_A-L-PRE-CONT-20260928T090440Z-1-001/Pre_27_A-L-PRE-CONT/titik 2.jpg,27.A-L,after_pre,2,10.2,9.8,10.6,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_27_A-L-PRE-CONT-20260928T090440Z-1-001/Pre_27_A-L-PRE-CONT/titik 3.jpg,27.A-L,after_pre,3,14.9,14.8,15.0,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_27_A-L-PRE-CONT-20260928T090440Z-1-001/Pre_27_A-L-PRE-CONT/titik 4.jpg,27.A-L,after_pre,4,66.2,65.4,67.1,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_27_A-L-PRE-CONT-20260928T090440Z-1-001/Pre_27_A-L-PRE-CONT/titik 5.jpg,27.A-L,after_pre,5,27.4,25.9,28.9,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_27_A-L-PRE-CONT-20260928T090440Z-1-001/Pre_27_A-L-PRE-CONT/titik 6.jpg,27.A-L,after_pre,6,26.4,22.5,30.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_37_A-C-PRE-CONT-20260928T090454Z-1-001/Pre_37_A-C-PRE-CONT/titik 1.jpg,37.A-C,after_pre,1,5.8,6.1,5.4,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_47_A-R-PRE-CONT-20260928T090450Z-1-001/Pre_47_A-R-PRE-CONT/Titik 1.jpg,47.A-R,after_pre,1,9.1,8.7,9.5,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_47_A-R-PRE-CONT-20260928T090450Z-1-001/Pre_47_A-R-PRE-CONT/Titik 2.jpg,47.A-R,after_pre,2,27.5,26.7,28.3,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_47_A-R-PRE-CONT-20260928T090450Z-1-001/Pre_47_A-R-PRE-CONT/Titik 3.jpg,47.A-R,after_pre,3,32.6,24.4,40.7,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_47_A-R-PRE-CONT-20260928T090450Z-1-001/Pre_47_A-R-PRE-CONT/Titik 4.jpg,47.A-R,after_pre,4,61.4,64.9,57.9,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_47_A-R-PRE-CONT-20260928T090450Z-1-001/Pre_47_A-R-PRE-CONT/Titik 5.jpg,47.A-R,after_pre,5,16.0,11.2,20.8,imagej_contact_angle,1
+02 - Pre-Degreasing/Contact Angle/Data sesudah pre_degreasing/Pre_47_A-R-PRE-CONT-20260928T090450Z-1-001/Pre_47_A-R-PRE-CONT/Titik 6.jpg,47.A-R,after_pre,6,25.5,30.6,20.4,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/32.A-L-Post-Cont/titik1.jpg,32.A-L,before_pre,1,81.923,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/32.A-L-Post-Cont/titik2.jpg,32.A-L,before_pre,2,81.838,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/32.A-L-Post-Cont/titik3.jpg,32.A-L,before_pre,3,85.341,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/32.A-L-Post-Cont/titik4.jpg,32.A-L,before_pre,4,82.522,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/32.A-L-Post-Cont/titik5.jpg,32.A-L,before_pre,5,80.033,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/32.A-L-Post-Cont/titik6.jpg,32.A-L,before_pre,6,85.665,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/42.A-C-Post-Cont/titik1.jpg,42.A-C,before_pre,1,86.056,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/42.A-C-Post-Cont/titik2.jpg,42.A-C,before_pre,2,88.675,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/42.A-C-Post-Cont/titik3.jpg,42.A-C,before_pre,3,83.877,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/42.A-C-Post-Cont/titik4.jpg,42.A-C,before_pre,4,72.752,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/42.A-C-Post-Cont/titik5.jpg,42.A-C,before_pre,5,83.28,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/42.A-C-Post-Cont/titik6.jpg,42.A-C,before_pre,6,83.958,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/52.A-R-Post-Cont/titik1.jpg,52.A-R,before_pre,1,80.61,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/52.A-R-Post-Cont/titik2.jpg,52.A-R,before_pre,2,83.747,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/52.A-R-Post-Cont/titik3.jpg,52.A-R,before_pre,3,87.637,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/52.A-R-Post-Cont/titik4.jpg,52.A-R,before_pre,4,90.303,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/52.A-R-Post-Cont/titik5.jpg,52.A-R,before_pre,5,85.93,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/52.A-R-Post-Cont/titik6.jpg,52.A-R,before_pre,6,86.911,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/49.G1-L-03 Cont_Ang/titik1.jpg,49.G1-L,before_pre,1,92.7,90.6,94.8,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/49.G1-L-03 Cont_Ang/titik2.jpg,49.G1-L,before_pre,2,78.8,80.2,77.4,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/49.G1-L-03 Cont_Ang/titik3.jpg,49.G1-L,before_pre,3,88.6,85.1,92.1,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/49.G1-L-03 Cont_Ang/titik4.jpg,49.G1-L,before_pre,4,92.0,90.5,93.5,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/49.G1-L-03 Cont_Ang/titik5.jpg,49.G1-L,before_pre,5,94.1,95.4,92.7,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/49.G1-L-03 Cont_Ang/titik6.jpg,49.G1-L,before_pre,6,91.4,93.6,89.3,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/58.G1-C-03 Cont_Angle/titik1.jpg,58.G1-C,before_pre,1,89.55,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/58.G1-C-03 Cont_Angle/titik2.jpg,58.G1-C,before_pre,2,80.85,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/58.G1-C-03 Cont_Angle/titik3.jpg,58.G1-C,before_pre,3,92.85,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/58.G1-C-03 Cont_Angle/titik4.jpg,58.G1-C,before_pre,4,81.05,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/58.G1-C-03 Cont_Angle/titik5.jpg,58.G1-C,before_pre,5,71.9,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/58.G1-C-03 Cont_Angle/titik6.jpg,58.G1-C,before_pre,6,80.9,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/67.G1-R-03 Cont_Ang/titik1.jpg,67.G1-R,before_pre,1,91.15,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/67.G1-R-03 Cont_Ang/titik2.jpg,67.G1-R,before_pre,2,72.0,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/67.G1-R-03 Cont_Ang/titik3.jpg,67.G1-R,before_pre,3,81.0,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/67.G1-R-03 Cont_Ang/titik4.jpg,67.G1-R,before_pre,4,76.6,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/67.G1-R-03 Cont_Ang/titik5.jpg,67.G1-R,before_pre,5,70.6,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/Before Pre Degreasing and ECL/67.G1-R-03 Cont_Ang/titik6.jpg,67.G1-R,before_pre,6,59.95,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/32.A-L-Post-Cont/titik1.jpg,32.A-L,after_pre,1,35.182,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/32.A-L-Post-Cont/titik2.jpg,32.A-L,after_pre,2,27.685,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/32.A-L-Post-Cont/titik3.jpg,32.A-L,after_pre,3,29.03,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/32.A-L-Post-Cont/titik4.jpg,32.A-L,after_pre,4,30.1,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/32.A-L-Post-Cont/titik5.jpg,32.A-L,after_pre,5,29.076,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/32.A-L-Post-Cont/titik6.jpg,32.A-L,after_pre,6,35.065,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/42.A-C-Post-Cont/titik1.jpg,42.A-C,after_pre,1,39.043,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/42.A-C-Post-Cont/titik2.jpg,42.A-C,after_pre,2,37.978,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/42.A-C-Post-Cont/titik3.jpg,42.A-C,after_pre,3,34.121,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/42.A-C-Post-Cont/titik4.jpg,42.A-C,after_pre,4,43.571,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/42.A-C-Post-Cont/titik5.jpg,42.A-C,after_pre,5,35.929,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/42.A-C-Post-Cont/titik6.jpg,42.A-C,after_pre,6,30.954,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/52.A-R-Post-Cont/titik1.jpg,52.A-R,after_pre,1,22.312,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/52.A-R-Post-Cont/titik2.jpg,52.A-R,after_pre,2,26.155,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/52.A-R-Post-Cont/titik3.jpg,52.A-R,after_pre,3,18.876,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/52.A-R-Post-Cont/titik4.jpg,52.A-R,after_pre,4,24.796,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/52.A-R-Post-Cont/titik5.jpg,52.A-R,after_pre,5,28.224,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/52.A-R-Post-Cont/titik6.jpg,52.A-R,after_pre,6,31.656,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/49.G1-L-03 Cont_Ang ( after pre )/titik1.jpg,49.G1-L,after_pre,1,18.6,20.3,16.9,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/49.G1-L-03 Cont_Ang ( after pre )/titik2.jpg,49.G1-L,after_pre,2,13.0,13.5,12.5,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/49.G1-L-03 Cont_Ang ( after pre )/titik3.jpg,49.G1-L,after_pre,3,4.4,4.3,4.4,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/49.G1-L-03 Cont_Ang ( after pre )/titik4.jpg,49.G1-L,after_pre,4,8.8,9.7,8.0,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/49.G1-L-03 Cont_Ang ( after pre )/titik5.jpg,49.G1-L,after_pre,5,10.0,11.2,8.8,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/49.G1-L-03 Cont_Ang ( after pre )/titik6.jpg,49.G1-L,after_pre,6,4.3,4.3,4.3,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/58.G1-C-03-Cont_Ang ( After pre )/titik1.jpg,58.G1-C,after_pre,1,7.6,7.9,7.4,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/58.G1-C-03-Cont_Ang ( After pre )/titik2.jpg,58.G1-C,after_pre,2,15.2,16.4,13.9,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/58.G1-C-03-Cont_Ang ( After pre )/titik3.jpg,58.G1-C,after_pre,3,10.1,9.0,11.2,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/58.G1-C-03-Cont_Ang ( After pre )/titik4.jpg,58.G1-C,after_pre,4,8.0,7.9,8.0,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/58.G1-C-03-Cont_Ang ( After pre )/titik5.jpg,58.G1-C,after_pre,5,17.2,16.5,17.9,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/58.G1-C-03-Cont_Ang ( After pre )/titik6.jpg,58.G1-C,after_pre,6,12.0,12.6,11.4,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/67.G1-R-03-Cont_Angle ( after pre )/titik1.jpg,67.G1-R,after_pre,1,14.0,13.8,14.3,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/67.G1-R-03-Cont_Angle ( after pre )/titik2.jpg,67.G1-R,after_pre,2,15.9,16.3,15.5,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/67.G1-R-03-Cont_Angle ( after pre )/titik3.jpg,67.G1-R,after_pre,3,18.3,20.0,16.6,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/67.G1-R-03-Cont_Angle ( after pre )/titik4.jpg,67.G1-R,after_pre,4,11.4,11.5,11.4,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/67.G1-R-03-Cont_Angle ( after pre )/titik5.jpg,67.G1-R,after_pre,5,10.0,11.0,9.0,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/67.G1-R-03-Cont_Angle ( after pre )/titik6.jpg,67.G1-R,after_pre,6,8.4,8.7,8.2,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-CO3-CA-TT-GRAV/titik1.jpg,G2-DS-C,after_pre,1,19.418,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-CO3-CA-TT-GRAV/titik2.jpg,G2-DS-C,after_pre,2,37.892,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-CO3-CA-TT-GRAV/titik3.jpg,G2-DS-C,after_pre,3,19.788,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-CO3-CA-TT-GRAV/titik4.jpg,G2-DS-C,after_pre,4,27.398,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-CO3-CA-TT-GRAV/titik5.jpg,G2-DS-C,after_pre,5,29.525,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-CO3-CA-TT-GRAV/titik6.jpg,G2-DS-C,after_pre,6,32.204,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-LO3-CA-TT-GRAV/titik1.jpg,G2-DS-L,after_pre,1,45.288,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-LO3-CA-TT-GRAV/titik2.jpg,G2-DS-L,after_pre,2,39.868,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-LO3-CA-TT-GRAV/titik3.jpg,G2-DS-L,after_pre,3,32.244,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-LO3-CA-TT-GRAV/titik4.jpg,G2-DS-L,after_pre,4,29.031,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-LO3-CA-TT-GRAV/titik5.jpg,G2-DS-L,after_pre,5,35.72,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-LO3-CA-TT-GRAV/titik6.jpg,G2-DS-L,after_pre,6,30.05,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-RO3-CA-TT-GRAV/titik1.jpg,G2-DS-R,after_pre,1,37.999,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-RO3-CA-TT-GRAV/titik2.jpg,G2-DS-R,after_pre,2,39.317,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-RO3-CA-TT-GRAV/titik3.jpg,G2-DS-R,after_pre,3,15.642,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-RO3-CA-TT-GRAV/titik4.jpg,G2-DS-R,after_pre,4,17.361,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-RO3-CA-TT-GRAV/titik5.jpg,G2-DS-R,after_pre,5,40.231,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After Pre Degreasing/Sampel G2-DS-RO3-CA-TT-GRAV/titik6.jpg,G2-DS-R,after_pre,6,42.657,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/49.G1-L-03_Cont_Ang( ECL )/titik1.jpg,49.G1-L,after_ecl,1,9.6,9.3,9.9,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/49.G1-L-03_Cont_Ang( ECL )/titik2.jpg,49.G1-L,after_ecl,2,11.0,11.1,11.0,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/49.G1-L-03_Cont_Ang( ECL )/titik3.jpg,49.G1-L,after_ecl,3,15.0,14.4,15.7,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/49.G1-L-03_Cont_Ang( ECL )/titik4.jpg,49.G1-L,after_ecl,4,26.1,22.1,30.1,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/49.G1-L-03_Cont_Ang( ECL )/titik5.jpg,49.G1-L,after_ecl,5,37.2,23.3,51.0,imagej_contact_angle,0
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/49.G1-L-03_Cont_Ang( ECL )/titik6.jpg,49.G1-L,after_ecl,6,17.2,15.7,18.6,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/58.G1-C-03_Cont ( ECL )/titik1.jpg,58.G1-C,after_ecl,1,13.2,14.3,12.2,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/58.G1-C-03_Cont ( ECL )/titik2.jpg,58.G1-C,after_ecl,2,16.7,17.0,16.4,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/58.G1-C-03_Cont ( ECL )/titik3.jpg,58.G1-C,after_ecl,3,8.7,8.5,8.9,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/58.G1-C-03_Cont ( ECL )/titik4.jpg,58.G1-C,after_ecl,4,10.8,13.1,8.5,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/58.G1-C-03_Cont ( ECL )/titik5.jpg,58.G1-C,after_ecl,5,14.8,14.0,15.5,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/58.G1-C-03_Cont ( ECL )/titik6.jpg,58.G1-C,after_ecl,6,14.0,14.8,13.2,imagej_contact_angle,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/67.G1-R-03_Cont ( ECL )/titik1.jpg,67.G1-R,after_ecl,1,12.1,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/67.G1-R-03_Cont ( ECL )/titik2.jpg,67.G1-R,after_ecl,2,29.65,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/67.G1-R-03_Cont ( ECL )/titik3.jpg,67.G1-R,after_ecl,3,14.35,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/67.G1-R-03_Cont ( ECL )/titik4.jpg,67.G1-R,after_ecl,4,13.65,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/67.G1-R-03_Cont ( ECL )/titik5.jpg,67.G1-R,after_ecl,5,11.85,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/67.G1-R-03_Cont ( ECL )/titik6.jpg,67.G1-R,after_ecl,6,14.875,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-CO3-CA-TT-GRAV (ECL)/titik1.jpg,G2-DS-C,after_ecl,1,49.233,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-CO3-CA-TT-GRAV (ECL)/titik2.jpg,G2-DS-C,after_ecl,2,30.306,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-CO3-CA-TT-GRAV (ECL)/titik3.jpg,G2-DS-C,after_ecl,3,26.754,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-CO3-CA-TT-GRAV (ECL)/titik4.jpg,G2-DS-C,after_ecl,4,28.846,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-CO3-CA-TT-GRAV (ECL)/titik5.jpg,G2-DS-C,after_ecl,5,41.6,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-CO3-CA-TT-GRAV (ECL)/titik6.jpg,G2-DS-C,after_ecl,6,25.64,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-LO3-CA-TT-GRAV (ECL)/titik1.jpg,G2-DS-L,after_ecl,1,36.006,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-LO3-CA-TT-GRAV (ECL)/titik2.jpg,G2-DS-L,after_ecl,2,21.263,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-LO3-CA-TT-GRAV (ECL)/titik3.jpg,G2-DS-L,after_ecl,3,30.909,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-LO3-CA-TT-GRAV (ECL)/titik4.jpg,G2-DS-L,after_ecl,4,24.213,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-LO3-CA-TT-GRAV (ECL)/titik5.jpg,G2-DS-L,after_ecl,5,26.356,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-LO3-CA-TT-GRAV (ECL)/titik6.jpg,G2-DS-L,after_ecl,6,25.159,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-RO3-CA-TT-GRAV (ECL)/titik1.jpg,G2-DS-R,after_ecl,1,29.736,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-RO3-CA-TT-GRAV (ECL)/titik2.jpg,G2-DS-R,after_ecl,2,45.023,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-RO3-CA-TT-GRAV (ECL)/titik3.jpg,G2-DS-R,after_ecl,3,20.437,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-RO3-CA-TT-GRAV (ECL)/titik4.jpg,G2-DS-R,after_ecl,4,35.276,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-RO3-CA-TT-GRAV (ECL)/titik5.jpg,G2-DS-R,after_ecl,5,47.994,,,imagej_lbadsa,1
+03 - ECL Treatment/05-CONTACT ANGLE/After ECL/Sampel G2-DS-RO3-CA-TT-GRAV (ECL)/titik6.jpg,G2-DS-R,after_ecl,6,47.339,,,imagej_lbadsa,1

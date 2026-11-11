@@ -237,6 +237,11 @@ def ensure_results(keys, label="Menganalisis"):
     bar.empty()
 
 
+def _geom_note(res) -> str:
+    g = res.diagnostics.get("geom_theta")
+    return f" (geometri saja: {g:.1f}°)" if isinstance(g, float) and math.isfinite(g) else ""
+
+
 def fmt(v, nd=1):
     return "–" if v is None or (isinstance(v, float) and not math.isfinite(v)) else f"{v:.{nd}f}"
 
@@ -584,8 +589,10 @@ def panel_atur():
                              hide_index=True, width="stretch",
                              column_config={c_: st.column_config.NumberColumn(format="%.1f°")
                                             for c_ in ("Kiri", "Kanan", "Rata-rata")})
-                st.caption("Elips sama dengan plugin ImageJ. Lingkaran dan tinggi/lebar menganggap tetesan "
-                           "berbentuk tutup bola. Tangen lokal hanya memakai kontur di dekat titik kontak.")
+                st.caption("Model (ImageJ): koreksi terlatih dari pengukuran manual ImageJ di lab, dibatasi "
+                           f"±25° dari geometri{_geom_note(res)}. Elips sama dengan plugin ImageJ. Lingkaran dan "
+                           "tinggi/lebar menganggap tetesan berbentuk tutup bola. Tangen lokal hanya memakai "
+                           "kontur di dekat titik kontak.")
         foto = [i for i in res.issues if i.source == "foto"]
         anal = [i for i in res.issues if i.source == "analisis"]
         st.markdown(

@@ -6,8 +6,10 @@ from dataclasses import dataclass, field
 import cv2
 import numpy as np
 
+from . import candidates as cand_mod
+from . import learned
 from .baseline import find_baseline_candidates, refine_global, refine_local, rotation_for
-from .detect import DropDetection, detect_drop, snap_profile
+from .detect import DropDetection, detect_drops, snap_profile
 from .geometry import (ContactResult, Line, ParamCurve, contact_from_curve, curve_distance, fit_circle,
                        fit_ellipse, fit_ellipse_axis, spherical_cap_angle, tangent_poly)
 from .quality import Issue, confidence, edge_profile_stats, run_checks
@@ -46,6 +48,7 @@ class AnalysisResult:
     primary_method: str = "Elips"
     diagnostics: dict = field(default_factory=dict)
     scale: float = 1.0  # skala overlay terhadap foto asli
+    alt_rois: list = field(default_factory=list)  # lokasi tetesan alternatif [(kotak, rasio skor)]
 
 
 class _Frame:
@@ -76,15 +79,9 @@ def _roi_to_rot(frame: _Frame, roi):
     return (c[:, 0].min(), c[:, 1].min(), c[:, 0].max(), c[:, 1].max())
 
 
-def _detect_with_line(gray_rot, line, roi_rot):
-    det = detect_drop(gray_rot, line, roi_rot)
-    if det is None:
-        return None, -1
-    c = contact_from_curve(det.curve, line)
-    return det, det.score if c is not None else -1
-
-
 MAX_SIDE = 2000  # foto lebih besar diperkecil untuk analisis (sudut tidak bergantung skala)
+HYPOTHESES = 4  # jumlah kandidat lokasi tetesan yang diukur ulang pada mode otomatis
+DEBUG: dict = {}  # diisi data antara bila tidak kosong (untuk pengembangan, mis. DEBUG["on"] = True)
 
 
 def analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None) -> AnalysisResult:
@@ -98,22 +95,51 @@ def analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None) 
     try:
         if image_bgr is None or image_bgr.size == 0:
             return AnalysisResult(False, message="Gambar kosong atau tidak terbaca.")
+        if image_bgr.ndim == 2:
+            image_bgr = cv2.cvtColor(image_bgr, cv2.COLOR_GRAY2BGR)
         h, w = image_bgr.shape[:2]
         s = min(1.0, MAX_SIDE / max(h, w))
-        if s < 1.0:
-            image_bgr = cv2.resize(image_bgr, None, fx=s, fy=s, interpolation=cv2.INTER_AREA)
-            roi = None if roi is None else tuple(v * s for v in roi)
-            baseline = None if baseline is None else tuple(tuple(v * s for v in p) for p in baseline)
-            manual_points = None if manual_points is None else [tuple(v * s for v in p) for p in manual_points]
-        res = _analyze(image_bgr, roi, baseline, manual_points)
-        if s < 1.0:
-            k = 1.0 / s
-            res.base_width_px *= k
-            res.height_px *= k
-            res.baseline_pts = None if res.baseline_pts is None else tuple(tuple(v * k for v in p) for p in res.baseline_pts)
-            res.contact_pts = None if res.contact_pts is None else tuple(tuple(v * k for v in p) for p in res.contact_pts)
-            res.roi_suggestion = None if res.roi_suggestion is None else tuple(v * k for v in res.roi_suggestion)
+        small = cv2.resize(image_bgr, None, fx=s, fy=s, interpolation=cv2.INTER_AREA) if s < 1.0 else image_bgr
+        auto = baseline is None and manual_points is None
+        n_hyp = HYPOTHESES if auto and roi is None else 1
+        # Tahap 1: cari tetesan (beberapa kandidat lokasi) pada foto yang diperkecil.
+        coarse = _scaled(_analyze, small, s, roi, baseline, manual_points, orig_shape=image_bgr.shape,
+                         n_alt=n_hyp - 1)
+        coarse.scale = s
+        hints = ([(coarse.roi_suggestion, 1.0)] if coarse.roi_suggestion is not None else []) + coarse.alt_rois
+        # Tahap 2: ukur ulang tiap kandidat pada potongan beresolusi penuh (tetesan sering hanya
+        # ±100–300 px di foto 4000 px), lalu pilih kandidat yang benar-benar tetesan.
+        fines, feats = [], []
+        for i, (hint, ratio) in enumerate(hints[:n_hyp]):
+            fine = None
+            if not (i == 0 and s >= 1.0):  # foto kecil: potongan tidak menambah resolusi
+                box = _crop_box(hint, roi, baseline, manual_points, (h, w))
+                fine = _analyze_crop(image_bgr, box, hint, roi, baseline, manual_points) if box else None
+                if fine is not None:
+                    fine.diagnostics["box"] = box
+            if i == 0 and coarse.ok and (fine is None or not fine.ok or not _consistent(fine, hint)):
+                # potongan tidak menemukan tetesan yang sama (mis. terpecah jadi dua busur): pakai tahap 1
+                fine = coarse
+                fine.diagnostics["box"] = None
+            if fine is None:
+                continue
+            fines.append(fine)
+            feats.append(learned.hyp_features(fine, i, ratio, image_bgr.shape))
+        if not fines:
+            return coarse
+        k = 0
+        probs = learned.rank(feats) if len(fines) > 1 else None
+        if probs is not None:
+            k = int(np.argmax(probs))
+        elif not fines[0].ok:  # tanpa model: kandidat pertama yang berhasil
+            k = next((i for i, f in enumerate(fines) if f.ok), 0)
+        res = fines[k]
+        if res.diagnostics.get("box") is not None:
+            res.overlay = _paste_overlay(small, res, res.diagnostics["box"], s)
         res.scale = s
+        res.diagnostics.update(hyps=feats, chosen=k, rank_probs=None if probs is None else probs.tolist())
+        if auto:
+            _apply_model(res, feats[k])
         return res
     except Exception as e:  # pragma: no cover - pengaman agar satu foto rusak tidak menghentikan batch
         return AnalysisResult(
@@ -123,7 +149,146 @@ def analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None) 
                           "Gunakan mode Lokasi tetesan atau Titik tepi untuk membantu deteksi.")])
 
 
-def _analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None) -> AnalysisResult:
+def _scaled(fn, img, s: float, roi, baseline, manual_points, offset=(0.0, 0.0), **kw) -> AnalysisResult:
+    """Jalankan fn pada citra `img` = foto asli (digeser `offset`, diskalakan `s`); hasil dalam koordinat foto asli."""
+    ox, oy = offset
+
+    def fwd(p):
+        return ((p[0] - ox) * s, (p[1] - oy) * s)
+
+    def back(p):
+        return (p[0] / s + ox, p[1] / s + oy)
+
+    roi_s = None if roi is None else fwd(roi[:2]) + fwd(roi[2:])
+    bl_s = None if baseline is None else tuple(fwd(p) for p in baseline)
+    mp_s = None if manual_points is None else [fwd(p) for p in manual_points]
+    res = fn(img, roi_s, bl_s, mp_s, **kw)
+    res.base_width_px /= s
+    res.height_px /= s
+    res.baseline_pts = None if res.baseline_pts is None else tuple(back(p) for p in res.baseline_pts)
+    res.contact_pts = None if res.contact_pts is None else tuple(back(p) for p in res.contact_pts)
+    res.roi_suggestion = None if res.roi_suggestion is None else back(res.roi_suggestion[:2]) + back(res.roi_suggestion[2:])
+    res.alt_rois = [(back(b[:2]) + back(b[2:]), r) for b, r in res.alt_rois]
+    return res
+
+
+def _consistent(fine: AnalysisResult, hint) -> bool:
+    """Hasil potongan mengukur tetesan berukuran sama dengan petunjuk tahap kasar."""
+    if fine.roi_suggestion is None:
+        return False
+    wf = abs(fine.roi_suggestion[2] - fine.roi_suggestion[0])
+    wh = abs(hint[2] - hint[0])
+    return 0.75 <= wf / max(wh, 1e-6) <= 1.33
+
+
+def _apply_model(res: AnalysisResult, feat: dict) -> None:
+    """Sudut & keyakinan dari model terlatih (acuan ImageJ), bila model tersedia."""
+    th = learned.angle(feat)
+    if not np.isfinite(th):
+        return
+    err = learned.expected_error(feat)
+    geo = res.theta
+    res.diagnostics.update(geom_theta=geo, model_theta=th, model_err=err)
+    if res.ok and np.isfinite(geo):
+        d = th - geo  # pertahankan selisih kiri–kanan dari geometri
+        res.theta_left = res.theta_left + d if np.isfinite(res.theta_left) else th
+        res.theta_right = res.theta_right + d if np.isfinite(res.theta_right) else th
+    else:
+        # kontur tertutup (kamera dari atas): perkiraan dari profil atas tetesan
+        if not np.isfinite(feat.get("c_ext_hw", np.nan)) and not np.isfinite(feat.get("c_ext_cir", np.nan)):
+            return
+        res.theta_left = res.theta_right = th
+        res.issues = [i for i in res.issues if i.level != "error"] + [Issue(
+            "warning", "foto", "Kamera dari atas: sudut hanya perkiraan",
+            "Tetesan terlihat sebagai bentuk tertutup (tapak/pantulan tetesan ikut terlihat). Sudut "
+            "diperkirakan dari profil atas tetesan dengan model yang dilatih dari pengukuran ImageJ.",
+            "Untuk hasil yang lebih pasti, foto ulang dengan kamera sejajar permukaan pelat.")]
+        res.ok = True
+        res.message = ""
+    res.theta = th
+    res.methods.insert(0, MethodResult("Model (ImageJ)", res.theta_left, res.theta_right))
+    res.primary_method = "Model (ImageJ)"
+    model_conf = int(np.clip(100 - 5 * (err - 2), 0, 100)) if np.isfinite(err) else 100
+    res.confidence = min(confidence(res.issues), model_conf)
+
+
+def _crop_box(hint, roi, baseline, manual_points, shape):
+    """Area (x0, y0, x1, y1) foto asli di sekitar tetesan untuk analisis resolusi penuh."""
+    pts = []
+    for src in (roi and [roi[:2], roi[2:]], hint and [hint[:2], hint[2:]],
+                baseline, manual_points):
+        if src:
+            pts += [tuple(p) for p in src]
+    if not pts:
+        return None
+    pts = np.asarray(pts, float)
+    x0, y0 = pts.min(0)
+    x1, y1 = pts.max(0)
+    span = max(x1 - x0, 0.03 * max(shape))
+    h, w = shape
+    box = (int(max(0, x0 - 1.2 * span)), int(max(0, y0 - 0.9 * span)),
+           int(min(w, x1 + 1.2 * span)), int(min(h, y1 + 0.6 * span)))
+    if box[2] - box[0] < 64 or box[3] - box[1] < 64:
+        return None
+    return box
+
+
+def _analyze_crop(image_bgr, box, hint, roi, baseline, manual_points):
+    x0, y0, x1, y1 = box
+    crop = image_bgr[y0:y1, x0:x1]
+    c = min(1.0, MAX_SIDE / max(crop.shape[:2]))
+    if c < 1.0:
+        crop = cv2.resize(crop, None, fx=c, fy=c, interpolation=cv2.INTER_AREA)
+    if roi is None and hint is not None:
+        # area tetesan dari tahap kasar sebagai panduan (sedikit diperlebar)
+        rx0, ry0, rx1, ry1 = hint
+        rx0, rx1 = sorted([rx0, rx1])
+        ry0, ry1 = sorted([ry0, ry1])
+        pad = 0.15 * (rx1 - rx0)
+        roi = (rx0 - pad, ry0 - pad, rx1 + pad, ry1 + 0.5 * pad)
+    prefer = None
+    if hint is not None:  # ukur ulang tetesan yang sama dengan tahap kasar, bukan objek lain di potongan
+        prefer = ((hint[0] - x0) * c, (hint[1] - y0) * c, (hint[2] - x0) * c, (hint[3] - y0) * c)
+    res = _scaled(_analyze, crop, c, roi, baseline, manual_points, offset=(x0, y0), orig_shape=image_bgr.shape,
+                  n_alt=3 if prefer is not None else 0, prefer=prefer,
+                  line_px=_line_px(image_bgr.shape) * c / min(1.0, MAX_SIDE / max(image_bgr.shape[:2])))
+    res.alt_rois = []
+    return res if res.ok or res.overlay is not None else None
+
+
+def _paste_overlay(full_small: np.ndarray, fine: AnalysisResult, box, s: float) -> np.ndarray:
+    """Overlay seluruh foto (skala s) dengan bagian tetesan diganti overlay resolusi penuh."""
+    out = full_small.copy()
+    if fine.overlay is None:
+        return out
+    x0, y0, x1, y1 = [int(round(v * s)) for v in box]
+    x1, y1 = min(x1, out.shape[1]), min(y1, out.shape[0])
+    if x1 - x0 < 2 or y1 - y0 < 2:
+        return out
+    out[y0:y1, x0:x1] = cv2.resize(fine.overlay, (x1 - x0, y1 - y0), interpolation=cv2.INTER_AREA)
+    return out
+
+
+def _det_box(frame: _Frame, line: Line, det: DropDetection, w: int, h: int) -> tuple:
+    """Kotak (x0, y0, x1, y1) di citra (belum diluruskan) di sekitar tetesan hasil deteksi."""
+    p = det.points
+    bx0, bx1, by0 = p[:, 0].min(), p[:, 0].max(), p[:, 1].min()
+    by1 = float(line.y_at((bx0 + bx1) / 2))
+    pad = 0.3 * max(bx1 - bx0, 10)
+    c = frame.to_orig([[bx0 - pad, by0 - pad], [bx1 + pad, by0 - pad], [bx0 - pad, by1], [bx1 + pad, by1]])
+    return (max(0.0, c[:, 0].min()), max(0.0, c[:, 1].min()), min(float(w), c[:, 0].max()), min(float(h), c[:, 1].max()))
+
+
+def _iou(a, b) -> float:
+    ix = max(0.0, min(a[2], b[2]) - max(a[0], b[0]))
+    iy = max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+    inter = ix * iy
+    union = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None, orig_shape=None,
+             n_alt: int = 0, prefer=None, line_px: float | None = None) -> AnalysisResult:
     if image_bgr is None or image_bgr.size == 0:
         return AnalysisResult(False, message="Gambar kosong atau tidak terbaca.")
     if image_bgr.ndim == 2:
@@ -158,6 +323,7 @@ def _analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None)
 
     # ---------- 2. Kontur tetesan ----------
     best = None
+    found, alt_rois = [], []  # semua hipotesis; lokasi alternatif (kotak di citra ini, rasio skor)
     for frame, line, pol, bl_weight in candidates:
         gray_rot = frame.warp(gray)
         roi_rot = _roi_to_rot(frame, roi) if roi is not None else None
@@ -173,12 +339,24 @@ def _analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None)
             det = DropDetection(pts, circ, 1.0, None, 0, ["Titik tepi dari input manual."])
             best = (1e9, frame, line, pol, det, gray_rot)
             break
-        det, score = _detect_with_line(gray_rot, line, roi_rot)
-        score *= bl_weight
-        if det is not None and (best is None or score > best[0]):
-            best = (score, frame, line, pol, det, gray_rot)
+        for det in detect_drops(gray_rot, line, roi_rot, k=1 + n_alt):
+            score = (det.score if contact_from_curve(det.curve, line) is not None else -1) * bl_weight
+            found.append((score, frame, line, pol, det, gray_rot))
         if baseline is not None:
             break
+    if found:
+        found.sort(key=lambda t: t[0], reverse=True)
+        best = best or found[0]
+        if prefer is not None:
+            ious = [(_iou(_det_box(f[1], f[2], f[4], w, h), prefer), f[0]) for f in found]
+            i_best = max(range(len(found)), key=lambda i: (ious[i][0] > 0.2, ious[i][0] * (ious[i][1] > 0)))
+            if ious[i_best][0] > 0.2:
+                best = found[i_best]
+        for score, frame_a, line_a, _, det_a, _ in found[1:]:
+            box = _det_box(frame_a, line_a, det_a, w, h)
+            if score > 0 and all(_iou(box, b) < 0.3 for b, _ in alt_rois + [(_det_box(*best[1:3], best[4], w, h), 0)]):
+                alt_rois.append((box, score / max(found[0][0], 1e-9)))
+        alt_rois = alt_rois[:n_alt]
     if best is None or best[4] is None:
         return AnalysisResult(
             False,
@@ -276,7 +454,7 @@ def _analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None)
     surface = _surface_visible(gray_rot, line, bx0, bx1) if not closed else 0.0
     vfa = surface if surface > max(30.0, 0.035 * h) else None
     ctx = dict(
-        image_shape=image_bgr.shape, base_width=cres.base_width if not closed else bx1 - bx0,
+        image_shape=orig_shape if orig_shape is not None else image_bgr.shape, base_width=cres.base_width if not closed else bx1 - bx0,
         apex_height=cres.apex_height, theta=np.nan if closed else cres.theta_mean,
         closed_above=closed, view_from_above=vfa, baseline_angle=frame.angle + np.degrees(np.arctan(line.m)),
         asymmetry=abs(cres.theta_left - cres.theta_right) if not closed else np.nan,
@@ -286,9 +464,12 @@ def _analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None)
         primary_method="Lingkaran" if primary is cir else "Elips",
     )
     issues = run_checks(ctx)
+    ctx["cand"] = cand_mod.compute(pts, line, primary, cres, ctx)
 
     # ---------- 6. Overlay ----------
-    overlay = draw_overlay(image_bgr, frame, line, primary, pts, cres, closed)
+    overlay = draw_overlay(image_bgr, frame, line, primary, pts, cres, closed, line_px)
+    if DEBUG:
+        DEBUG.update(gray_rot=gray_rot, line=line, curve=primary, pts=pts, frame=frame, det=det)
 
     bl_rot = np.array([[0, line.y_at(0)], [w, line.y_at(w)]])
     bl_orig = frame.to_orig(bl_rot)
@@ -306,7 +487,9 @@ def _analyze(image_bgr: np.ndarray, roi=None, baseline=None, manual_points=None)
         message="; ".join(det.notes),
         primary_method=ctx["primary_method"],
         diagnostics={k: v for k, v in ctx.items() if k != "image_shape"},
+        alt_rois=alt_rois,
     )
+    res.diagnostics["det_score"] = float(best[0])
     if closed:
         res.message = "Sudut kontak tidak dapat diukur dari foto ini (lihat peringatan)."
     return res
@@ -375,10 +558,16 @@ def _to_int(p):
     return tuple(int(round(v)) for v in p)
 
 
-def draw_overlay(img, frame: _Frame, line: Line, curve: ParamCurve, pts, cres: ContactResult, closed: bool):
+def _line_px(shape) -> int:
+    """Tebal garis overlay (px) pada overlay seluruh foto (sisi terpanjang ≤ MAX_SIDE)."""
+    return max(1, int(round(min(max(shape[:2]), MAX_SIDE) / 700)))
+
+
+def draw_overlay(img, frame: _Frame, line: Line, curve: ParamCurve, pts, cres: ContactResult, closed: bool,
+                 line_px: float | None = None):
     out = img.copy()
     h, w = out.shape[:2]
-    th = max(1, int(round(w / 700)))
+    th = max(1, int(round(line_px))) if line_px else max(1, int(round(w / 700)))
     # baseline
     bl = frame.to_orig([[0, line.y_at(0)], [w, line.y_at(w)]])
     cv2.line(out, _to_int(bl[0]), _to_int(bl[1]), (40, 190, 255), th, cv2.LINE_AA)

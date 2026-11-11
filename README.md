@@ -45,13 +45,44 @@ Setiap foto mendapat skor **keyakinan** dan temuan dalam dua kelompok:
 
 | Langkah | Cara |
 |---|---|
+| Lokasi tetesan | Foto diperkecil → hingga 4 kandidat lokasi tetesan → tiap kandidat diukur ulang pada potongan **resolusi penuh** → **model pemilih** (terlatih) memilih yang benar-benar tetesan, bukan kilau/kotoran |
 | Baseline | Garis lurus dengan transisi terang→gelap terkuat (proyeksi gradien multi-sudut), diperhalus sub-piksel di sekitar tetesan |
 | Kontur | Rantai tepi Canny → hipotesis busur yang menyentuh baseline → dinilai dari dukungan tepi di sepanjang busur → diperhalus & dikunci ke tepi terluar (siluet) → profil sub-piksel di sepanjang normal |
-| Sudut | **Elips** (utama, seperti plugin ImageJ), **Lingkaran**, **Tangen lokal** (polinomial dekat titik kontak), **Tinggi/lebar** (θ = 2·atan(2h/d)) |
+| Kandidat sudut | **Elips**, **Lingkaran**, **Tangen lokal**, **Tinggi/lebar**, fit busur atas saja, baseline di ujung kontur, baseline melalui ujung kiri–kanan siluet (kamera dari atas) |
+| Sudut utama | **Model (ImageJ)**: koreksi terlatih terhadap median kandidat, dibatasi ±25°; lihat *Model terlatih* |
+| Keyakinan | Peringatan kualitas foto + **model kesalahan** (perkiraan selisih terhadap ImageJ) |
 | Ketidakpastian | ±°/px: perubahan sudut bila baseline digeser 1 piksel |
 
-Bila elips menghasilkan ujung tetesan yang tidak wajar secara fisik (jauh di atas estimasi lingkaran), metode utama
-otomatis beralih ke lingkaran dan diberi peringatan.
+Bila user mengatur baseline atau titik tepi secara manual, model tidak dipakai: hasilnya murni geometri dari input
+user.
+
+## Model terlatih
+
+Foto lab sering memuat masalah yang ambigu untuk geometri murni: kamera sedikit dari atas sehingga **pantulan
+tetesan** di permukaan pelat ikut terlihat, kaki tetesan gelap/berbayang, tetesan sudut rendah tampak sebagai
+elips tertutup, dan banyak objek kecil (kilau, kotoran) yang mirip busur. Model kecil (gradient boosting, disimpan
+sebagai pohon keputusan JSON di `ca_core/model/`, cukup numpy untuk dipakai) dilatih dari pengukuran manual ImageJ:
+
+- **ranker**: memilih kandidat lokasi yang merupakan tetesan;
+- **angle**: koreksi sudut terhadap median kandidat geometri (dibatasi ±25°, tanpa alasan kuat mengikuti geometri);
+- **error**: perkiraan selisih → skor keyakinan.
+
+Data latih: 210 foto berlabel (18 sampel, tahap baseline / sebelum & sesudah pre-degreasing / sesudah ECL) dari
+folder `KARAKTERISASI` (nilai ImageJ *Contact Angle* Theta E atau LBADSA), plus 200 tetesan sintetis dengan sudut
+pasti agar model tidak "merusak" tetesan yang bersih.
+
+Melatih ulang (mis. setelah ada data baru):
+
+```bash
+.venv\Scripts\python -m pip install -r requirements-dev.txt
+.venv\Scripts\python scripts\build_reference.py "C:\...\KARAKTERISASI"     # nilai ImageJ → data/reference_imagej.csv
+.venv\Scripts\python scripts\benchmark.py "C:\...\KARAKTERISASI" --tag baru  # kandidat & ciri per foto
+.venv\Scripts\python scripts\synthetic_hyps.py 200                          # data sintetis
+.venv\Scripts\python scripts\train_model.py baru                            # validasi silang + simpan model
+.venv\Scripts\python -m pytest                                               # perbarui EXPECTED bila sengaja berubah
+```
+
+Folder/sheet Excel baru perlu ditambahkan ke daftar `BLOCKS` di `scripts/build_reference.py`.
 
 ## Struktur
 
@@ -60,16 +91,41 @@ app.py               antarmuka Streamlit (Upload → Atur → Hasil)
 ca_ui/clicker/       komponen gambar interaktif (canvas, kaca pembesar, tanpa build tool)
 ca_core/
   baseline.py        deteksi & penghalusan baseline
-  detect.py          deteksi kontur tetesan
+  detect.py          deteksi kontur tetesan (beberapa hipotesis)
   geometry.py        fitting elips/lingkaran/tangen & perhitungan sudut
+  candidates.py      kandidat pengukuran sudut + ciri geometri
+  learned.py         model terlatih (pemilih, sudut, kesalahan); model/*.json
+  synthetic.py       foto tetesan sintetis dengan sudut pasti (uji & augmentasi)
   quality.py         pemeriksaan kualitas foto & analisis
   analyze.py         pipeline utama + overlay
   worker.py          entry point untuk analisis di proses paralel
-scripts/run_samples.py   uji batch pada folder samples/ (overlay disimpan ke output/)
+data/reference_imagej.csv   nilai acuan ImageJ per foto
+scripts/             build_reference, benchmark, synthetic_hyps, train_model, run_samples
+tests/               uji regresi, akurasi sintetis, model, ekspor
 samples/             foto contoh
 ```
 
 ## Validasi
 
-Belum divalidasi terhadap nilai ImageJ karena foto mentah dengan nilai acuan belum tersedia. Langkah berikutnya:
-ukur 10–20 foto yang sama di ImageJ dan di app ini, lalu bandingkan selisihnya (target ±2°).
+Dibandingkan dengan pengukuran manual ImageJ pada 210 foto lab (folder `KARAKTERISASI`, November 2026).
+Angka di bawah dari **validasi silang per sampel**: tiap sampel diprediksi oleh model yang dilatih tanpa foto
+sampel itu, jadi mencerminkan foto baru.
+
+| | Selisih rata-rata | Median | ≤ 5° | ≤ 10° |
+|---|---|---|---|---|
+| Geometri saja (versi sebelumnya) | 18,6° | 12,5° | 21% | 40% |
+| **Dengan model** | **12,3°** | **8,5°** | **36%** | **53%** |
+
+Rata-rata per sampel & tahap (37 kelompok): selisih 10,4° (sebelumnya 16,4°).
+Skor keyakinan berarti: foto dengan perkiraan selisih terendah (sepertiga teratas) rata-rata meleset 8°,
+sepertiga terbawah 19°.
+
+Pada tetesan sintetis dengan sudut pasti (bukan data latih): selisih rata-rata 0,7° (geometri saja 0,8°),
+92% dalam ±2°.
+
+Batasan:
+- Nilai ImageJ sendiri bervariasi ±6° (SD) antar titik dalam satu sampel dan sebagian label meragukan
+  (7 ditandai `ref_ok = 0` di `data/reference_imagej.csv` dan tidak dipakai).
+- Sisa kesalahan terbesar: deteksi memilih objek lain (kilau, kotoran) pada foto yang ramai, dan sudut 40–70°
+  (hanya 12 foto latih). Periksa foto dengan keyakinan rendah lewat overlay di langkah Atur.
+- Foto dengan kamera dari atas tetap lebih baik difoto ulang; sudut untuk kasus ini hanya perkiraan.

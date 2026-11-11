@@ -188,7 +188,7 @@ def snap_profile(gray: np.ndarray, curve: ParamCurve, line: Line, search: float 
     r = np.arange(len(k))
     a, b, c = prof[r, kk - 1], prof[r, kk], prof[r, kk + 1]
     den = a - 2 * b + c
-    sub = np.where(np.abs(den) > 1e-9, 0.5 * (a - c) / den, 0.0)
+    sub = np.divide(0.5 * (a - c), den, out=np.zeros_like(den), where=np.abs(den) > 1e-9)
     off = offs[kk] + np.clip(sub, -0.5, 0.5) * 0.25
     out = pts + nrm * off[:, None]
     peak = prof[r, k]
@@ -235,6 +235,22 @@ def _hypotheses(edges: np.ndarray, line: Line, shape, min_h: float) -> list[Para
 
 def detect_drop(gray_rot: np.ndarray, line: Line, roi: tuple[int, int, int, int] | None = None) -> DropDetection | None:
     """Cari tetesan di atas baseline. roi = (x0, y0, x1, y1) opsional pada citra lurus."""
+    found = detect_drops(gray_rot, line, roi, k=1)
+    return found[0] if found else None
+
+
+def _distinct(c: ParamCurve, chosen: list[ParamCurve]) -> bool:
+    """Kurva c berada di lokasi lain (bukan variasi dari tetesan yang sudah dipilih)."""
+    for o in chosen:
+        size = max(o.a, c.a)
+        if np.hypot(c.cx - o.cx, c.cy - o.cy) < 0.6 * size and 0.5 < c.a / max(o.a, 1e-6) < 2.0:
+            return False
+    return True
+
+
+def detect_drops(gray_rot: np.ndarray, line: Line, roi: tuple[int, int, int, int] | None = None,
+                 k: int = 1) -> list[DropDetection]:
+    """Hingga k hipotesis tetesan di lokasi berbeda, skor tertinggi lebih dulu."""
     h, w = gray_rot.shape
     yb = float(line.y_at(w / 2))
     if roi is not None:
@@ -249,23 +265,35 @@ def detect_drop(gray_rot: np.ndarray, line: Line, roi: tuple[int, int, int, int]
     ys, xs = np.nonzero(edges)
     edge_pts = np.column_stack([xs, ys]).astype(float)
     if len(edge_pts) < 20:
-        return None
+        return []
 
     min_h = max(3.0, 0.004 * h)
     hyps = _hypotheses(edges, line, (h, w), min_h)
     if not hyps:
-        return None
+        return []
 
     scored = sorted(((_support(c, line, dist)[1], c) for c in hyps), key=lambda t: t[0], reverse=True)
-    best = None
-    for _, c in scored[:10]:
+    refined = []
+    for _, c in scored[:max(10, 4 * k)]:
         r = _refine(c, line, edge_pts, (h, w), dist)
         frac, sc = _support(r, line, dist)
-        if best is None or sc > best[0]:
-            best = (sc, frac, r)
-    score, frac, curve = best
-    if score <= 0:
-        return None
+        refined.append((sc, frac, r))
+    refined.sort(key=lambda t: t[0], reverse=True)
+    out, chosen = [], []
+    for score, frac, curve in refined:
+        if len(out) >= k or score <= 0:
+            break
+        if not _distinct(curve, chosen):
+            continue
+        chosen.append(curve)
+        det = _finish(gray_rot, line, curve, frac, score, edges, edge_pts, dist, top, (h, w))
+        if det is not None:
+            out.append(det)
+    return out
+
+
+def _finish(gray_rot, line, curve, frac, score, edges, edge_pts, dist, top, shape) -> DropDetection | None:
+    h, w = shape
     notes = []
     d_out = _push_outward(curve, line, dist, frac)
     if d_out > 0:

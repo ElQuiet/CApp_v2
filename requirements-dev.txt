@@ -1,2 +1,4 @@
 -r requirements.txt
 pytest
+# hanya untuk melatih ulang model (scripts/train_model.py); app tidak membutuhkannya
+scikit-learn
