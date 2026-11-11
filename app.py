@@ -6,6 +6,7 @@ Jalankan:  .venv\\Scripts\\streamlit run app.py
 from __future__ import annotations
 
 import hashlib
+import hmac
 import html
 import io
 import math
@@ -897,12 +898,30 @@ def page_hasil():
 
 
 # ---------------------------------------------------------------- app
+def password_ok() -> bool:
+    """Bila variabel lingkungan CA_PASSWORD diset (mis. secret di Hugging Face), minta password dulu."""
+    want = os.environ.get("CA_PASSWORD", "")
+    if not want or ss.get("auth_ok"):
+        return True
+    st.markdown('<p class="ca-brand">Contact Angle <span>sessile drop</span></p>', unsafe_allow_html=True)
+    with st.form("login"):
+        pw = st.text_input("Password", type="password")
+        if st.form_submit_button("Masuk", type="primary"):
+            if hmac.compare_digest(pw.encode(), want.encode()):
+                ss.auth_ok = True
+                st.rerun()
+            st.error("Password salah.")
+    return False
+
+
 def main():
     global ss, P
     st.set_page_config(page_title="Contact Angle", layout="wide", initial_sidebar_state="collapsed")
     ss = _state()
     P = PAL[ss.theme]
     st.markdown(css(P, ss.step), unsafe_allow_html=True)
+    if not password_ok():
+        return
     with st.container(key="theme_js"):
         st.iframe(THEME_JS % ss.theme, height=1)
 

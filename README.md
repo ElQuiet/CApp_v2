@@ -1,3 +1,14 @@
+---
+title: Contact Angle Analyzer
+emoji: 💧
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+short_description: Ukur sudut kontak sessile drop dari foto
+---
+
 # Contact Angle Analyzer
 
 Web app untuk mengukur sudut kontak (*sessile drop*) langsung dari foto: tanpa menandai lingkaran manual seperti di ImageJ.
@@ -14,6 +25,34 @@ python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt
 .venv\Scripts\streamlit run app.py
 ```
+
+## Deploy online (Hugging Face Spaces)
+
+App berjalan di server Hugging Face, jadi bisa dibuka dari mana saja tanpa PC lab yang menyala. Setiap
+`git push` ke Space otomatis membangun ulang app (±5–10 menit) memakai `Dockerfile`.
+
+Sekali saja:
+
+1. Buat akun di https://huggingface.co, lalu **New Space** → SDK **Docker** (template *Blank*), hardware
+   *CPU basic* (gratis). Pilih **Private** bila kode/model tidak boleh terlihat publik.
+2. Settings Space → **Variables and secrets** → *New secret* `CA_PASSWORD` = password untuk tim lab.
+3. Buat *access token* (Settings akun → Access Tokens, jenis **Write**) untuk dipakai sebagai password git.
+4. Di folder proyek:
+   ```bash
+   git remote add space https://huggingface.co/spaces/<username>/<nama-space>
+   git push space main
+   ```
+   Saat diminta: username = username Hugging Face, password = access token tadi.
+
+Update berikutnya cukup `git add -A`, `git commit -m "..."`, `git push space main`.
+
+Catatan:
+- Space gratis "tidur" bila tidak dibuka beberapa waktu; pembukaan pertama sesudahnya butuh ±1 menit.
+- Foto yang diupload diproses di server Hugging Face (tidak disimpan app, hilang saat Space restart).
+  Untuk data yang tidak boleh keluar lab, jalankan lokal dengan `run_app.bat`.
+- Space **private** hanya bisa dibuka akun Hugging Face yang punya akses (undang anggota lewat
+  *Organization*). Space **public** + `CA_PASSWORD`: siapa pun dengan password bisa memakai app, tetapi
+  file kode & model terlihat publik.
 
 ## Alur pemakaian
 

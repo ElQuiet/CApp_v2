@@ -1,0 +1,10 @@
+.venv/
+.venv_broken_old/
+.git/
+.vs/
+.claude/
+output/
+tests/
+**/__pycache__/
+*.pyc
+.pytest_cache/

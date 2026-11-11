@@ -4,3 +4,5 @@ output/
 .vs/
 *.pyc
 .claude
+.venv_broken_old/
+.pytest_cache/
