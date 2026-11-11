@@ -1,13 +1,3 @@
----
-title: Contact Angle Analyzer
-emoji: 💧
-colorFrom: blue
-colorTo: green
-sdk: docker
-app_port: 7860
-pinned: false
-short_description: Ukur sudut kontak sessile drop dari foto
----
 
 # Contact Angle Analyzer
 
